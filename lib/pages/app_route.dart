@@ -12,7 +12,6 @@ class AppPage extends StatefulWidget {
 }
 
 class _AppPageState extends State<AppPage> {
-  int _tab = 0;
   late Future<List<App>> _futureApps;
 
   @override
