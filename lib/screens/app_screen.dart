@@ -1,5 +1,10 @@
-import 'package:appcheck/appcheck.dart';
+import 'dart:io';
+import 'package:app_installer/app_installer.dart';
 import 'package:flutter/material.dart';
+import 'package:appcheck/appcheck.dart';
+import 'package:dio/dio.dart';
+import 'package:permission_handler/permission_handler.dart';
+
 import 'package:swn_play/api/models/apps.dart';
 import 'package:swn_play/api/repository/apps_repository.dart';
 
@@ -16,11 +21,12 @@ class AppScreen extends StatefulWidget {
 class _AppScreenState extends State<AppScreen> {
   late Future<App> _futureApp;
   late bool _installed = false;
+  double? _progress;
+  String _status = '';
 
   Future<void> checkPackageName() async {
     App gettedApp = await _futureApp;
     final String package = gettedApp.packageName;
-
     AppCheck.checkAvailability(package).then(
       (app) => {
         setState(() {
@@ -35,6 +41,37 @@ class _AppScreenState extends State<AppScreen> {
     _futureApp = fetchAppById(widget.id);
     checkPackageName();
     super.initState();
+  }
+
+  Future<void> playApp() async {
+    App gettedApp = await _futureApp;
+    final String package = gettedApp.packageName;
+    await AppCheck.launchApp(package);
+  }
+
+  Future<void> requestPermissions() async {
+    Map<Permission, PermissionStatus> statuses = await [
+      Permission.storage,
+      Permission.requestInstallPackages,
+    ].request();
+  }
+
+  Future<void> installApk(String filePath) async {
+    await AppInstaller.installApk(filePath);
+  }
+
+  Future<void> downloadApp() async {
+    await requestPermissions();
+    App gettedApp = await _futureApp;
+    String url = gettedApp.downloadLink;
+    String fileName = '${gettedApp.title}.apk';
+    Directory dir = Directory('/storage/emulated/0/Download/SWN Play');
+    String savePath = '${dir.path}/$fileName';
+
+    debugPrint("Downloading");
+    await Dio().download(url, savePath);
+    debugPrint("Downloaded successfully");
+    await installApk(savePath);
   }
 
   @override
@@ -54,7 +91,13 @@ class _AppScreenState extends State<AppScreen> {
                 children: [
                   Text(snapshot.data!.title,
                       style: const TextStyle(fontSize: 20)),
-                  Text(_installed ? "установленно" : "не установленно"),
+                  Text(snapshot.data!.downloadLink),
+                  _installed
+                      ? TextButton(
+                          onPressed: playApp, child: const Text("Запустить"))
+                      : ElevatedButton(
+                          onPressed: downloadApp,
+                          child: const Text('Download')),
                   const SizedBox(height: 8),
                 ],
               );

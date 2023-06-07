@@ -24,7 +24,6 @@ Future<App> fetchAppById(int id) async {
 
   if (response.statusCode == 200) {
     final app = App.fromJson(json.decode(response.body));
-    debugPrint("id: $id");
     debugPrint(app.toString());
     return app;
   } else {
