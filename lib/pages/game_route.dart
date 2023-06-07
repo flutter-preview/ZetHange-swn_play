@@ -8,8 +8,6 @@ class GamePage extends StatefulWidget {
 }
 
 class _GamePageState extends State<GamePage> {
-  int _tab = 0;
-
   @override
   Widget build(BuildContext context) {
     return Center();

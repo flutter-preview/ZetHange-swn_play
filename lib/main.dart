@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:swn_play/pages/app_page.dart';
+import 'package:swn_play/pages/app_route.dart';
 import 'package:swn_play/pages/game_route.dart';
+import 'package:swn_play/pages/settings_route.dart';
 
 void main() {
   runApp(const SWNPlayApp());
@@ -15,6 +16,8 @@ class SWNPlayApp extends StatelessWidget {
       title: 'SWN Play',
       theme: ThemeData(
         useMaterial3: true,
+        navigationBarTheme: const NavigationBarThemeData(
+            backgroundColor: Colors.white, indicatorColor: Colors.green),
       ),
       debugShowCheckedModeBanner: false,
       initialRoute: '/',
@@ -33,8 +36,9 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   int _tab = 0;
   final List<Widget> _pages = [
-    AppPage(),
-    GamePage(),
+    const AppPage(),
+    const GamePage(),
+    const SettingsPage(),
   ];
 
   @override

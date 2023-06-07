@@ -1,8 +1,7 @@
 name: Android Build
 
 on:
-  pull_request:
-    branches: [ master ]
+  commit:
   workflow_dispatch:
 
 jobs:
@@ -33,7 +32,7 @@ jobs:
           token: ${{ secrets.TELEGRAM_TOKEN }}
           message: |
             Билд ${{github.run_number}}
-            Изменения: ${{ github.event.commits[0].message }}
+            Изменения: ${{ github.event.head_commit.message }}
             
-            Репозиторий: ${{ github.repository }}
+            Репозиторий: https://github.com/${{ github.repository }}
           document: build/app/outputs/flutter-apk/app-release.apk
