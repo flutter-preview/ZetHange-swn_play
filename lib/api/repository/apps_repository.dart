@@ -5,12 +5,8 @@ import 'package:swn_play/api/api.dart';
 import 'package:swn_play/api/models/apps.dart';
 
 Future<List<App>> fetchApps() async {
-  const API_URL = Api.API_URL;
-  debugPrint("$API_URL/apps");
-
   final response = await http
-      .get(Uri.parse('$API_URL/apps'));
-  debugPrint("success");
+      .get(Uri.parse('${Api.apiUrl}/apps'));
 
   if (response.statusCode == 200) {
     final List<dynamic> jsonData = json.decode(response.body);
@@ -18,6 +14,20 @@ Future<List<App>> fetchApps() async {
     debugPrint(appList.toString());
     return appList;
   } else {
-    throw Exception('Failed to load apps: $response.statusCode');
+    throw Exception('Failed to load apps: ${response.statusCode}');
+  }
+}
+
+Future<App> fetchAppById(int id) async {
+  final response = await http
+      .get(Uri.parse('${Api.apiUrl}/apps/$id'));
+
+  if (response.statusCode == 200) {
+    final app = App.fromJson(json.decode(response.body));
+    debugPrint("id: $id");
+    debugPrint(app.toString());
+    return app;
+  } else {
+    throw Exception('Failed to load app with id $id: ${response.statusCode}');
   }
 }

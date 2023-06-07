@@ -33,7 +33,8 @@ class _AppPageState extends State<AppPage> {
                 itemCount: snapshot.data!.length,
                 itemBuilder: (context, index) {
                   final post = snapshot.data![index];
-                  return AppWidget(
+                  return AppListWidget(
+                    id: post.id,
                     title: post.title,
                     logo: post.logo,
                   );
