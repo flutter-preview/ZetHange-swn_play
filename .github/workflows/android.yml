@@ -1,0 +1,39 @@
+name: Android Build
+
+on:
+  pull_request:
+    branches: [ master ]
+  workflow_dispatch:
+
+jobs:
+  assemble_job:
+    name: Сборка
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-java@v2
+        with:
+          distribution: 'zulu'
+          java-version: '12'
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.7.7'
+      - run: flutter pub get
+      - run: flutter build apk --release
+
+      - uses: actions/upload-artifact@v3
+        with:
+          name: swn-play
+          path: build/app/outputs/flutter-apk/app-release.apk
+
+      - name: Отправка билда в телеграм группу
+        uses: appleboy/telegram-action@master
+        with:
+          to: ${{ secrets.TELEGRAM_TO }}
+          token: ${{ secrets.TELEGRAM_TOKEN }}
+          message: |
+            Билд ${{github.run_number}}
+            Изменения: ${{ github.event.commits[0].message }}
+            
+            Репозиторий: ${{ github.repository }}
+          document: build/app/outputs/flutter-apk/app-release.apk
