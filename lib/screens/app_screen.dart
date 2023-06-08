@@ -23,7 +23,6 @@ class _AppScreenState extends State<AppScreen> {
   late bool _installed = false;
   bool _isLoading = false;
   double _progress = 0;
-  CancelToken cancelToken = CancelToken();
 
   Future<void> checkPackageName() async {
     App gettedApp = await _futureApp;
@@ -47,7 +46,7 @@ class _AppScreenState extends State<AppScreen> {
 
   void onReceiveProgress(received, total) {
     if (total != -1) {
-      if ((received / total * 100) == 100 || cancelToken.isCancelled) {
+      if ((received / total * 100) == 100) {
         setState(() {
           _isLoading = false;
           _progress = 0;
@@ -80,7 +79,6 @@ class _AppScreenState extends State<AppScreen> {
     await Dio().download(
       url,
       savePath,
-      cancelToken: cancelToken,
       onReceiveProgress: onReceiveProgress,
     );
 
@@ -92,10 +90,6 @@ class _AppScreenState extends State<AppScreen> {
     setState(() {
       _installed = true;
     });
-  }
-
-  void cancelDownload() {
-    cancelToken.cancel("Download cancelled by user");
   }
 
   @override
@@ -150,7 +144,7 @@ class _AppScreenState extends State<AppScreen> {
                           )
                         : ElevatedButton(
                             onPressed:
-                                _isLoading ? cancelDownload : downloadApp,
+                                _isLoading ? null : downloadApp,
                             style: ElevatedButton.styleFrom(
                               minimumSize: const Size(double.infinity, 48),
                               backgroundColor: Colors.green,
