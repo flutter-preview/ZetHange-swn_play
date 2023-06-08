@@ -3,7 +3,8 @@ import 'package:swn_play/pages/app_route.dart';
 import 'package:swn_play/pages/game_route.dart';
 import 'package:swn_play/pages/settings_route.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(const SWNPlayApp());
 }
 

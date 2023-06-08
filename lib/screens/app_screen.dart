@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:appcheck/appcheck.dart';
 import 'package:dio/dio.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 import 'package:swn_play/api/models/apps.dart';
 import 'package:swn_play/api/repository/apps_repository.dart';
@@ -23,7 +22,8 @@ class _AppScreenState extends State<AppScreen> {
   late Future<App> _futureApp;
   late bool _installed = false;
   bool _isLoading = false;
-  String _progress = "0%";
+  double _progress = 0;
+  CancelToken cancelToken = CancelToken();
 
   Future<void> checkPackageName() async {
     App gettedApp = await _futureApp;
@@ -47,15 +47,15 @@ class _AppScreenState extends State<AppScreen> {
 
   void onReceiveProgress(received, total) {
     if (total != -1) {
-      if ((received / total * 100) == 100) {
+      if ((received / total * 100) == 100 || cancelToken.isCancelled) {
         setState(() {
           _isLoading = false;
-          _progress = "";
+          _progress = 0;
         });
       } else {
         setState(() {
           _isLoading = true;
-          _progress = (received / total * 100).toStringAsFixed(0) + '%';
+          _progress = (received / total);
         });
       }
     }
@@ -77,9 +77,13 @@ class _AppScreenState extends State<AppScreen> {
     Directory dir = Directory('/storage/emulated/0/Download/SWN Play');
     String savePath = '${dir.path}/$fileName';
 
-    debugPrint("Downloading");
-    await Dio().download(url, savePath, onReceiveProgress: onReceiveProgress);
-    debugPrint("Downloaded successfully");
+    await Dio().download(
+      url,
+      savePath,
+      cancelToken: cancelToken,
+      onReceiveProgress: onReceiveProgress,
+    );
+
     await [
       Permission.requestInstallPackages,
     ].request();
@@ -90,6 +94,10 @@ class _AppScreenState extends State<AppScreen> {
     });
   }
 
+  void cancelDownload() {
+    cancelToken.cancel("Download cancelled by user");
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -97,7 +105,7 @@ class _AppScreenState extends State<AppScreen> {
         title: Text(widget.title),
       ),
       body: Container(
-        margin: const EdgeInsets.only(left: 5, right: 5, top: 5),
+        margin: const EdgeInsets.only(left: 10, right: 10, top: 10),
         child: FutureBuilder<App>(
           future: _futureApp,
           builder: (context, snapshot) {
@@ -105,27 +113,78 @@ class _AppScreenState extends State<AppScreen> {
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(snapshot.data!.title,
-                      style: const TextStyle(fontSize: 20)),
-                  ClipRRect(
-                      borderRadius: BorderRadius.circular(15.0),
-                      child: Image(
-                        width: 80,
-                        image: NetworkImage(snapshot.data!.logo),
-                      )),
-                  Text(
-                    "Описание: ${snapshot.data!.description}",
-                    style: GoogleFonts.roboto(),
+                  Row(
+                    children: [
+                      ClipRRect(
+                          borderRadius: BorderRadius.circular(15.0),
+                          child: Image(
+                            width: 80,
+                            image: NetworkImage(snapshot.data!.logo),
+                          )),
+                      Container(
+                        margin: const EdgeInsets.only(left: 5),
+                        child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(snapshot.data!.title,
+                                  style: const TextStyle(fontSize: 18)),
+                              Text(
+                                snapshot.data!.developer,
+                                style: const TextStyle(color: Colors.grey),
+                              )
+                            ]),
+                      ),
+                    ],
                   ),
-                  Text("имя пакета: ${snapshot.data!.packageName}"),
-                  Text("Ссылка: ${snapshot.data!.downloadLink}"),
-                  _installed
-                      ? TextButton(
-                          onPressed: playApp, child: const Text("Запустить"))
-                      : ElevatedButton(
-                          onPressed: _isLoading ? null : downloadApp,
-                          child: Text(_isLoading ? _progress : 'Download')),
-                  const SizedBox(height: 8),
+                  Container(
+                    margin: const EdgeInsets.only(top: 5),
+                    child: _installed
+                        ? ElevatedButton(
+                            onPressed: playApp,
+                            style: ElevatedButton.styleFrom(
+                              minimumSize: const Size(double.infinity, 48),
+                              backgroundColor: Colors.green,
+                              foregroundColor: Colors.white,
+                            ),
+                            child: const Text("Запустить"),
+                          )
+                        : ElevatedButton(
+                            onPressed:
+                                _isLoading ? cancelDownload : downloadApp,
+                            style: ElevatedButton.styleFrom(
+                              minimumSize: const Size(double.infinity, 48),
+                              backgroundColor: Colors.green,
+                              foregroundColor: Colors.white,
+                            ),
+                            child: _isLoading
+                                ? Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                        CircularProgressIndicator(
+                                            value: _progress,
+                                            color: Colors.white),
+                                      ])
+                                : const Text('Загрузить'),
+                          ),
+                  ),
+                  const SizedBox(height: 10),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: const [
+                            Text("Описание",
+                                textAlign: TextAlign.left,
+                                style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500)),
+                            Icon(Icons.chevron_right)
+                          ]),
+                      const SizedBox(height: 10),
+                      Text(
+                        snapshot.data!.description,
+                      ),
+                    ],
+                  ),
                 ],
               );
             } else {
