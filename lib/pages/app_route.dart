@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:swn_play/api/models/pagination.dart';
 
-import '../api/models/apps.dart';
 import '../api/repository/apps_repository.dart';
 import '../studies/app.dart';
 
@@ -12,7 +12,7 @@ class AppPage extends StatefulWidget {
 }
 
 class _AppPageState extends State<AppPage> {
-  late Future<List<App>> _futureApps;
+  late Future<Pagination> _futureApps;
 
   @override
   void initState() {
@@ -25,14 +25,14 @@ class _AppPageState extends State<AppPage> {
     return Center(
       child: Container(
         margin: const EdgeInsets.only(left: 5, right: 5, top: 5),
-        child: FutureBuilder<List<App>>(
+        child: FutureBuilder<Pagination>(
           future: _futureApps,
           builder: (context, snapshot) {
             if (snapshot.hasData) {
               return ListView.builder(
-                itemCount: snapshot.data!.length,
+                itemCount: snapshot.data!.content.length,
                 itemBuilder: (context, index) {
-                  final post = snapshot.data![index];
+                  final post = snapshot.data!.content[index];
                   return AppListWidget(
                     id: post.id,
                     title: post.title,

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:appcheck/appcheck.dart';
 import 'package:dio/dio.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import 'package:swn_play/api/models/apps.dart';
 import 'package:swn_play/api/repository/apps_repository.dart';
@@ -21,8 +22,6 @@ class AppScreen extends StatefulWidget {
 class _AppScreenState extends State<AppScreen> {
   late Future<App> _futureApp;
   late bool _installed = false;
-  double? _progress;
-  String _status = '';
 
   Future<void> checkPackageName() async {
     App gettedApp = await _futureApp;
@@ -56,10 +55,6 @@ class _AppScreenState extends State<AppScreen> {
     ].request();
   }
 
-  Future<void> installApk(String filePath) async {
-    await AppInstaller.installApk(filePath);
-  }
-
   Future<void> downloadApp() async {
     await requestPermissions();
     App gettedApp = await _futureApp;
@@ -71,7 +66,7 @@ class _AppScreenState extends State<AppScreen> {
     debugPrint("Downloading");
     await Dio().download(url, savePath);
     debugPrint("Downloaded successfully");
-    await installApk(savePath);
+    await AppInstaller.installApk(savePath);
   }
 
   @override
@@ -91,7 +86,18 @@ class _AppScreenState extends State<AppScreen> {
                 children: [
                   Text(snapshot.data!.title,
                       style: const TextStyle(fontSize: 20)),
-                  Text(snapshot.data!.downloadLink),
+                  ClipRRect(
+                      borderRadius: BorderRadius.circular(15.0),
+                      child: Image(
+                        width: 80,
+                        image: NetworkImage(snapshot.data!.logo),
+                      )),
+                  Text(
+                    "Описание: ${snapshot.data!.description}",
+                    style: GoogleFonts.roboto(),
+                  ),
+                  Text("имя пакета: ${snapshot.data!.packageName}"),
+                  Text("Ссылка: ${snapshot.data!.downloadLink}"),
                   _installed
                       ? TextButton(
                           onPressed: playApp, child: const Text("Запустить"))
