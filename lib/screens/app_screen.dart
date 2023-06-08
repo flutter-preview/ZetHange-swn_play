@@ -22,6 +22,8 @@ class AppScreen extends StatefulWidget {
 class _AppScreenState extends State<AppScreen> {
   late Future<App> _futureApp;
   late bool _installed = false;
+  bool _isLoading = false;
+  String _progress = "0%";
 
   Future<void> checkPackageName() async {
     App gettedApp = await _futureApp;
@@ -42,6 +44,23 @@ class _AppScreenState extends State<AppScreen> {
     super.initState();
   }
 
+  void onReceiveProgress(received, total) {
+    print((received / total * 100).toStringAsFixed(0) + '%');
+    if (total != -1) {
+      if ((received / total * 100) == 100) {
+        setState(() {
+          _isLoading = false;
+          _progress = "";
+        });
+      } else {
+        setState(() {
+          _isLoading = true;
+          _progress = (received / total * 100).toStringAsFixed(0) + '%';
+        });
+      }
+    }
+  }
+
   Future<void> playApp() async {
     App gettedApp = await _futureApp;
     final String package = gettedApp.packageName;
@@ -51,7 +70,7 @@ class _AppScreenState extends State<AppScreen> {
   Future<void> requestPermissions() async {
     Map<Permission, PermissionStatus> statuses = await [
       Permission.storage,
-      Permission.requestInstallPackages,
+      //Permission.requestInstallPackages,
     ].request();
   }
 
@@ -64,7 +83,7 @@ class _AppScreenState extends State<AppScreen> {
     String savePath = '${dir.path}/$fileName';
 
     debugPrint("Downloading");
-    await Dio().download(url, savePath);
+    await Dio().download(url, savePath, onReceiveProgress: onReceiveProgress);
     debugPrint("Downloaded successfully");
     await AppInstaller.installApk(savePath);
   }
@@ -103,7 +122,7 @@ class _AppScreenState extends State<AppScreen> {
                           onPressed: playApp, child: const Text("Запустить"))
                       : ElevatedButton(
                           onPressed: downloadApp,
-                          child: const Text('Download')),
+                          child: Text(_isLoading ? _progress : 'Download')),
                   const SizedBox(height: 8),
                 ],
               );
