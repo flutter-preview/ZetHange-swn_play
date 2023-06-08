@@ -30,6 +30,7 @@ class _AppScreenState extends State<AppScreen> {
     final String package = gettedApp.packageName;
     AppCheck.checkAvailability(package).then(
       (app) => {
+        debugPrint("app installed"),
         setState(() {
           _installed = true;
         })
@@ -45,7 +46,6 @@ class _AppScreenState extends State<AppScreen> {
   }
 
   void onReceiveProgress(received, total) {
-    print((received / total * 100).toStringAsFixed(0) + '%');
     if (total != -1) {
       if ((received / total * 100) == 100) {
         setState(() {
@@ -67,15 +67,10 @@ class _AppScreenState extends State<AppScreen> {
     await AppCheck.launchApp(package);
   }
 
-  Future<void> requestPermissions() async {
-    Map<Permission, PermissionStatus> statuses = await [
-      Permission.storage,
-      //Permission.requestInstallPackages,
-    ].request();
-  }
-
   Future<void> downloadApp() async {
-    await requestPermissions();
+    await [
+      Permission.storage,
+    ].request();
     App gettedApp = await _futureApp;
     String url = gettedApp.downloadLink;
     String fileName = '${gettedApp.title}.apk';
@@ -85,7 +80,14 @@ class _AppScreenState extends State<AppScreen> {
     debugPrint("Downloading");
     await Dio().download(url, savePath, onReceiveProgress: onReceiveProgress);
     debugPrint("Downloaded successfully");
+    await [
+      Permission.requestInstallPackages,
+    ].request();
+    debugPrint(savePath);
     await AppInstaller.installApk(savePath);
+    setState(() {
+      _installed = true;
+    });
   }
 
   @override
@@ -121,7 +123,7 @@ class _AppScreenState extends State<AppScreen> {
                       ? TextButton(
                           onPressed: playApp, child: const Text("Запустить"))
                       : ElevatedButton(
-                          onPressed: downloadApp,
+                          onPressed: _isLoading ? null : downloadApp,
                           child: Text(_isLoading ? _progress : 'Download')),
                   const SizedBox(height: 8),
                 ],
