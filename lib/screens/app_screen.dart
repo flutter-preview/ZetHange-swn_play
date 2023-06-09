@@ -7,6 +7,7 @@ import 'package:permission_handler/permission_handler.dart';
 
 import 'package:swn_play/api/models/apps.dart';
 import 'package:swn_play/api/repository/apps_repository.dart';
+import 'package:swn_play/screens/app/app_description_screen.dart';
 
 class AppScreen extends StatefulWidget {
   final int id;
@@ -75,6 +76,7 @@ class _AppScreenState extends State<AppScreen> {
     String fileName = '${gettedApp.title}.apk';
     Directory dir = Directory('/storage/emulated/0/Download/SWN Play');
     String savePath = '${dir.path}/$fileName';
+    downloadAppById(gettedApp.id);
 
     await Dio().download(
       url,
@@ -116,7 +118,7 @@ class _AppScreenState extends State<AppScreen> {
                             image: NetworkImage(snapshot.data!.logo),
                           )),
                       Container(
-                        margin: const EdgeInsets.only(left: 5),
+                        margin: const EdgeInsets.only(left: 10),
                         child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
@@ -131,7 +133,7 @@ class _AppScreenState extends State<AppScreen> {
                     ],
                   ),
                   Container(
-                    margin: const EdgeInsets.only(top: 5),
+                    margin: const EdgeInsets.only(top: 10),
                     child: _installed
                         ? ElevatedButton(
                             onPressed: playApp,
@@ -143,8 +145,7 @@ class _AppScreenState extends State<AppScreen> {
                             child: const Text("Запустить"),
                           )
                         : ElevatedButton(
-                            onPressed:
-                                _isLoading ? null : downloadApp,
+                            onPressed: _isLoading ? null : downloadApp,
                             style: ElevatedButton.styleFrom(
                               minimumSize: const Size(double.infinity, 48),
                               backgroundColor: Colors.green,
@@ -156,7 +157,10 @@ class _AppScreenState extends State<AppScreen> {
                                     children: [
                                         CircularProgressIndicator(
                                             value: _progress,
-                                            color: Colors.white),
+                                            color: Colors.green),
+                                        const SizedBox(width: 10),
+                                        Text(
+                                            '${(_progress * 100).toStringAsFixed(0)}%')
                                       ])
                                 : const Text('Загрузить'),
                           ),
@@ -165,14 +169,37 @@ class _AppScreenState extends State<AppScreen> {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: const [
-                            Text("Описание",
-                                textAlign: TextAlign.left,
-                                style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500)),
-                            Icon(Icons.chevron_right)
-                          ]),
+                      InkWell(
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => AppDescriptionScreen(
+                                        title: snapshot.data!.title,
+                                        descriptionFull:
+                                            snapshot.data!.descriptionFull,
+                                        latestVersion:
+                                            snapshot.data!.latestVersion,
+                                        viewedQuantity:
+                                            snapshot.data!.viewedQuantity,
+                                        downloadedQuantity:
+                                            snapshot.data!.downloadedQuantity,
+                                      )));
+                        },
+                        child: Container(
+                          padding: const EdgeInsets.all(5),
+                          child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: const [
+                                Text("Описание",
+                                    textAlign: TextAlign.left,
+                                    style: TextStyle(
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.w500)),
+                                Icon(Icons.chevron_right)
+                              ]),
+                        ),
+                      ),
                       const SizedBox(height: 10),
                       Text(
                         snapshot.data!.description,

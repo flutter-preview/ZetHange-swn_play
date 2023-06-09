@@ -10,6 +10,7 @@ Future<Pagination> fetchApps({int page = 1, int pageSize = 150}) async {
       .get(Uri.parse('${Api.apiUrl}/apps?page=${page}&pageSize=${pageSize}'));
 
   if (response.statusCode == 200) {
+    debugPrint(response.body);
     final jsonMap = jsonDecode(utf8.decode(response.bodyBytes));
     final Pagination pagination = Pagination.fromJson(jsonMap);
     return pagination;
@@ -19,12 +20,7 @@ Future<Pagination> fetchApps({int page = 1, int pageSize = 150}) async {
 }
 
 Future<App> fetchAppById(int id) async {
-  Map<String, String> headers = {
-    'Content-Type': 'application/json; charset=utf-8',
-  };
-
-  final response =
-      await http.get(Uri.parse('${Api.apiUrl}/apps/$id'), headers: headers);
+  final response = await http.get(Uri.parse('${Api.apiUrl}/apps/$id'));
 
   if (response.statusCode == 200) {
     final app = App.fromJson(jsonDecode(utf8.decode(response.bodyBytes)));
@@ -32,5 +28,16 @@ Future<App> fetchAppById(int id) async {
     return app;
   } else {
     throw Exception('Failed to load app with id $id: ${response.statusCode}');
+  }
+}
+
+Future<App> downloadAppById(int id) async {
+  final response = await http.post(Uri.parse('${Api.apiUrl}/apps/download/$id'));
+
+  if (response.statusCode == 200) {
+    final app = App.fromJson(jsonDecode(utf8.decode(response.bodyBytes)));
+    return app;
+  } else {
+    throw Exception('Failed to download app with id $id: ${response.statusCode}');
   }
 }
