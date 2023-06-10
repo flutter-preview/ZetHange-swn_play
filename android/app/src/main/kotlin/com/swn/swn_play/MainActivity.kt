@@ -1,4 +1,4 @@
-package com.swn.swn_play
+package com.stalkerworldnews.swnplay
 
 import io.flutter.embedding.android.FlutterActivity
 
