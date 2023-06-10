@@ -19,7 +19,7 @@ class AppScreen extends StatefulWidget {
   State<AppScreen> createState() => _AppScreenState();
 }
 
-class _AppScreenState extends State<AppScreen> {
+class _AppScreenState extends State<AppScreen> with WidgetsBindingObserver {
   late Future<App> _futureApp;
   late bool _installed = false;
   bool _isLoading = false;
@@ -40,9 +40,23 @@ class _AppScreenState extends State<AppScreen> {
 
   @override
   void initState() {
+    WidgetsBinding.instance.addObserver(this);
     _futureApp = fetchAppById(widget.id);
     checkPackageName();
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) {
+      checkPackageName();
+    }
   }
 
   void onReceiveProgress(received, total) {
@@ -71,6 +85,9 @@ class _AppScreenState extends State<AppScreen> {
     await [
       Permission.storage,
     ].request();
+    await [
+      Permission.requestInstallPackages,
+    ].request();
     App gettedApp = await _futureApp;
     String url = gettedApp.downloadLink;
     String fileName = '${gettedApp.title}.apk';
@@ -84,14 +101,8 @@ class _AppScreenState extends State<AppScreen> {
       onReceiveProgress: onReceiveProgress,
     );
 
-    await [
-      Permission.requestInstallPackages,
-    ].request();
     debugPrint(savePath);
     await AppInstaller.installApk(savePath);
-    setState(() {
-      _installed = true;
-    });
   }
 
   @override
@@ -175,15 +186,7 @@ class _AppScreenState extends State<AppScreen> {
                               context,
                               MaterialPageRoute(
                                   builder: (context) => AppDescriptionScreen(
-                                        title: snapshot.data!.title,
-                                        descriptionFull:
-                                            snapshot.data!.descriptionFull,
-                                        latestVersion:
-                                            snapshot.data!.latestVersion,
-                                        viewedQuantity:
-                                            snapshot.data!.viewedQuantity,
-                                        downloadedQuantity:
-                                            snapshot.data!.downloadedQuantity,
+                                        app: snapshot.data!,
                                       )));
                         },
                         child: Container(

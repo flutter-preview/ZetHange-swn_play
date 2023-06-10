@@ -1,34 +1,32 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:swn_play/api/models/apps.dart';
+import 'package:swn_play/studies/markdown.dart';
 
 class AppDescriptionScreen extends StatelessWidget {
-  final String title;
-  final String descriptionFull;
-  final String latestVersion;
-  final int viewedQuantity;
-  final int downloadedQuantity;
+  final App app;
+  var formatter = DateFormat('dd.MM.yyyy');
 
-  const AppDescriptionScreen({
+  AppDescriptionScreen({
     super.key,
-    required this.title,
-    required this.descriptionFull,
-    required this.latestVersion,
-    required this.viewedQuantity,
-    required this.downloadedQuantity,
+    required this.app,
   });
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text("Описание"),
+          title: const Text("Описание"),
         ),
         body: Container(
             margin: const EdgeInsets.only(right: 10, left: 10),
             child: SingleChildScrollView(
                 child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const SizedBox(height: 10),
-                Text(descriptionFull),
+                MyMarkdownWidget(app.descriptionFull),
                 const Divider(color: Colors.grey),
                 Container(
                   padding: const EdgeInsets.all(5),
@@ -36,22 +34,53 @@ class AppDescriptionScreen extends StatelessWidget {
                     children: [
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [const Text("Версия:"), Text(latestVersion)],
+                        children: [
+                          const Text("Имя пакета:"),
+                          Text(app.packageName)
+                        ],
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          const Text("Версия:"),
+                          Text(app.latestVersion)
+                        ],
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          const Text("Разработчик:"),
+                          Text(app.developer)
+                        ],
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          const Text("Дата публикации:"),
+                          Text(formatter.format(DateTime.parse(app.createdAt)))
+                        ],
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          const Text("Дата обновления страницы:"),
+                          Text(formatter.format(DateTime.parse(app.updatedAt)))
+                        ],
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           const Text("Количество просмотров:"),
-                          Text(viewedQuantity.toString())
+                          Text(app.viewedQuantity.toString())
                         ],
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           const Text("Количество скачиваний:"),
-                          Text(downloadedQuantity.toString())
+                          Text(app.downloadedQuantity.toString())
                         ],
-                      )
+                      ),
                     ],
                   ),
                 ),

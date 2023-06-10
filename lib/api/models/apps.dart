@@ -14,21 +14,20 @@ class App {
   final String updatedAt;
   final bool isPublished;
 
-  const App(
-      {required this.id,
-      required this.title,
-      required this.developer,
-      required this.description,
-      required this.descriptionFull,
-      required this.downloadLink,
-      required this.logo,
-      required this.packageName,
-      required this.latestVersion,
-      required this.viewedQuantity,
-      required this.downloadedQuantity,
-      required this.createdAt,
-      required this.updatedAt,
-      required this.isPublished});
+  App({required this.id,
+    required this.title,
+    required this.developer,
+    required this.logo,
+    required this.createdAt,
+    required this.updatedAt,
+    required this.description,
+    required this.descriptionFull,
+    required this.downloadLink,
+    required this.packageName,
+    required this.latestVersion,
+    required this.viewedQuantity,
+    required this.downloadedQuantity,
+    required this.isPublished});
 
   @override
   toString() {
@@ -51,6 +50,34 @@ class App {
       createdAt: json['createdAt'],
       updatedAt: json['updatedAt'],
       isPublished: json["isPublished"],
+    );
+  }
+}
+
+class AppSummary {
+  final int id;
+  final String title;
+  final String developer;
+  final String logo;
+  final DateTime createdAt;
+  final DateTime updatedAt;
+
+  AppSummary(
+      {required this.id,
+        required this.title,
+        required this.developer,
+        required this.logo,
+        required this.createdAt,
+        required this.updatedAt});
+
+  factory AppSummary.fromJson(Map<String, dynamic> json) {
+    return AppSummary(
+      id: json['id'],
+      title: json['title'],
+      developer: json['developer'],
+      logo: json['logo'],
+      createdAt: DateTime.parse(json['createdAt']),
+      updatedAt: DateTime.parse(json['updatedAt']),
     );
   }
 }

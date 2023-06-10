@@ -5,7 +5,7 @@ class Pagination {
   final int page;
   final int pageSize;
   final int lastPage;
-  final List<App> content;
+  final List<AppSummary> content;
 
   const Pagination({
     required this.contentSize,
@@ -22,7 +22,7 @@ class Pagination {
 
   factory Pagination.fromJson(Map<String, dynamic> json) {
     final contentList = json['content'] as List<dynamic>;
-    final content = contentList.map((item) => App.fromJson(item)).toList();
+    final content = contentList.map((item) => AppSummary.fromJson(item)).toList();
 
     return Pagination(
       contentSize: json['contentSize'],
