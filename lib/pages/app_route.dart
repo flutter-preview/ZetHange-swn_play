@@ -17,7 +17,7 @@ class _AppPageState extends State<AppPage> {
   @override
   void initState() {
     super.initState();
-    _futureApps = fetchApps();
+    _futureApps = fetchApps("app");
   }
 
   @override

@@ -8,6 +8,7 @@ class App {
   final String logo;
   final String packageName;
   final String latestVersion;
+  final String type;
   final int viewedQuantity;
   final int downloadedQuantity;
   final List<String> screenshots;
@@ -28,6 +29,7 @@ class App {
       required this.downloadLink,
       required this.packageName,
       required this.latestVersion,
+      required this.type,
       required this.viewedQuantity,
       required this.downloadedQuantity,
       required this.isPublished});
@@ -48,6 +50,7 @@ class App {
       viewedQuantity: json['viewedQuantity'],
       description: json['description'],
       descriptionFull: json['descriptionFull'],
+      type: json['type'],
       screenshots: List<String>.from(json['screenshots'].map((x) => x)),
       packageName: json['packageName'],
       latestVersion: json['latestVersion'],
