@@ -10,24 +10,27 @@ class App {
   final String latestVersion;
   final int viewedQuantity;
   final int downloadedQuantity;
+  final List<String> screenshots;
   final String createdAt;
   final String updatedAt;
   final bool isPublished;
 
-  App({required this.id,
-    required this.title,
-    required this.developer,
-    required this.logo,
-    required this.createdAt,
-    required this.updatedAt,
-    required this.description,
-    required this.descriptionFull,
-    required this.downloadLink,
-    required this.packageName,
-    required this.latestVersion,
-    required this.viewedQuantity,
-    required this.downloadedQuantity,
-    required this.isPublished});
+  App(
+      {required this.id,
+      required this.screenshots,
+      required this.title,
+      required this.developer,
+      required this.logo,
+      required this.createdAt,
+      required this.updatedAt,
+      required this.description,
+      required this.descriptionFull,
+      required this.downloadLink,
+      required this.packageName,
+      required this.latestVersion,
+      required this.viewedQuantity,
+      required this.downloadedQuantity,
+      required this.isPublished});
 
   @override
   toString() {
@@ -45,6 +48,7 @@ class App {
       viewedQuantity: json['viewedQuantity'],
       description: json['description'],
       descriptionFull: json['descriptionFull'],
+      screenshots: List<String>.from(json['screenshots'].map((x) => x)),
       packageName: json['packageName'],
       latestVersion: json['latestVersion'],
       createdAt: json['createdAt'],
@@ -64,11 +68,11 @@ class AppSummary {
 
   AppSummary(
       {required this.id,
-        required this.title,
-        required this.developer,
-        required this.logo,
-        required this.createdAt,
-        required this.updatedAt});
+      required this.title,
+      required this.developer,
+      required this.logo,
+      required this.createdAt,
+      required this.updatedAt});
 
   factory AppSummary.fromJson(Map<String, dynamic> json) {
     return AppSummary(

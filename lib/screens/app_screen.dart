@@ -118,132 +118,166 @@ class _AppScreenState extends State<AppScreen> with WidgetsBindingObserver {
           future: _futureApp,
           builder: (context, snapshot) {
             if (snapshot.hasData) {
-              return Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      ClipRRect(
-                          borderRadius: BorderRadius.circular(15.0),
-                          child: Image(
-                            width: 80,
-                            image: NetworkImage(snapshot.data!.logo),
-                          )),
-                      Container(
-                        margin: const EdgeInsets.only(left: 10),
-                        child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(snapshot.data!.title,
-                                  style: const TextStyle(fontSize: 18)),
-                              Text(
-                                snapshot.data!.developer,
-                                style: const TextStyle(color: Colors.grey),
-                              )
-                            ]),
-                      ),
-                    ],
-                  ),
-                  Container(
-                    margin: const EdgeInsets.only(top: 10),
-                    child: Builder(
-                      builder: (BuildContext context) {
-                        if (_installed &&
-                            _installedPackageVersion ==
-                                snapshot.data!.latestVersion) {
-                          return ElevatedButton(
-                            onPressed: playApp,
-                            style: ElevatedButton.styleFrom(
-                              minimumSize: const Size(double.infinity, 48),
-                              backgroundColor: Colors.green,
-                              foregroundColor: Colors.white,
-                            ),
-                            child: const Text("Запустить"),
-                          );
-                        } else if (_installed &&
-                            _installedPackageVersion !=
-                                snapshot.data!.latestVersion) {
-                          return ElevatedButton(
-                            onPressed: _isLoading ? null : downloadApp,
-                            style: ElevatedButton.styleFrom(
-                              minimumSize: const Size(double.infinity, 48),
-                              backgroundColor: Colors.green,
-                              foregroundColor: Colors.white,
-                            ),
-                            child: _isLoading
-                                ? Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                        CircularProgressIndicator(
-                                            value: _progress,
-                                            color: Colors.green),
-                                        const SizedBox(width: 10),
-                                        Text(
-                                            '${(_progress * 100).toStringAsFixed(0)}%')
-                                      ])
-                                : const Text('Обновить'),
-                          );
-                        } else {
-                          return ElevatedButton(
-                            onPressed: _isLoading ? null : downloadApp,
-                            style: ElevatedButton.styleFrom(
-                              minimumSize: const Size(double.infinity, 48),
-                              backgroundColor: Colors.green,
-                              foregroundColor: Colors.white,
-                            ),
-                            child: _isLoading
-                                ? Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                        CircularProgressIndicator(
-                                            value: _progress,
-                                            color: Colors.green),
-                                        const SizedBox(width: 10),
-                                        Text(
-                                            '${(_progress * 100).toStringAsFixed(0)}%')
-                                      ])
-                                : const Text('Загрузить'),
-                          );
-                        }
-                      },
-                    ),
-                  ),
-                  const SizedBox(height: 10),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      InkWell(
-                        onTap: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => AppDescriptionScreen(
-                                        app: snapshot.data!,
-                                        installedPackageVersion:
-                                            _installedPackageVersion,
-                                      )));
-                        },
-                        child: Container(
-                          padding: const EdgeInsets.all(5),
-                          child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: const [
-                                Text("Описание",
-                                    textAlign: TextAlign.left,
-                                    style: TextStyle(
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.w500)),
-                                Icon(Icons.chevron_right)
+              return SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        ClipRRect(
+                            borderRadius: BorderRadius.circular(15.0),
+                            child: Image(
+                              width: 80,
+                              image: NetworkImage(snapshot.data!.logo),
+                            )),
+                        Container(
+                          margin: const EdgeInsets.only(left: 10),
+                          child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(snapshot.data!.title,
+                                    style: const TextStyle(fontSize: 18)),
+                                Text(
+                                  snapshot.data!.developer,
+                                  style: const TextStyle(color: Colors.grey),
+                                )
                               ]),
                         ),
+                      ],
+                    ),
+                    Container(
+                      margin: const EdgeInsets.only(top: 10),
+                      child: Builder(
+                        builder: (BuildContext context) {
+                          if (_installed &&
+                              _installedPackageVersion ==
+                                  snapshot.data!.latestVersion) {
+                            return ElevatedButton(
+                              onPressed: playApp,
+                              style: ElevatedButton.styleFrom(
+                                minimumSize: const Size(double.infinity, 48),
+                                backgroundColor: Colors.green,
+                                foregroundColor: Colors.white,
+                              ),
+                              child: const Text("Запустить"),
+                            );
+                          } else if (_installed &&
+                              _installedPackageVersion !=
+                                  snapshot.data!.latestVersion) {
+                            return ElevatedButton(
+                              onPressed: _isLoading ? null : downloadApp,
+                              style: ElevatedButton.styleFrom(
+                                minimumSize: const Size(double.infinity, 48),
+                                backgroundColor: Colors.green,
+                                foregroundColor: Colors.white,
+                              ),
+                              child: _isLoading
+                                  ? Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                          CircularProgressIndicator(
+                                              value: _progress,
+                                              color: Colors.green),
+                                          const SizedBox(width: 10),
+                                          Text(
+                                              '${(_progress * 100).toStringAsFixed(0)}%')
+                                        ])
+                                  : const Text('Обновить'),
+                            );
+                          } else {
+                            return ElevatedButton(
+                              onPressed: _isLoading ? null : downloadApp,
+                              style: ElevatedButton.styleFrom(
+                                minimumSize: const Size(double.infinity, 48),
+                                backgroundColor: Colors.green,
+                                foregroundColor: Colors.white,
+                              ),
+                              child: _isLoading
+                                  ? Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                          CircularProgressIndicator(
+                                              value: _progress,
+                                              color: Colors.green),
+                                          const SizedBox(width: 10),
+                                          Text(
+                                              '${(_progress * 100).toStringAsFixed(0)}%')
+                                        ])
+                                  : const Text('Загрузить'),
+                            );
+                          }
+                        },
                       ),
-                      const SizedBox(height: 10),
-                      Text(
-                        snapshot.data!.description,
+                    ),
+                    const SizedBox(height: 10),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        InkWell(
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => AppDescriptionScreen(
+                                          app: snapshot.data!,
+                                          installedPackageVersion:
+                                              _installedPackageVersion,
+                                        )));
+                          },
+                          child: Container(
+                            padding: const EdgeInsets.all(5),
+                            child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: const [
+                                  Text("Описание",
+                                      textAlign: TextAlign.left,
+                                      style: TextStyle(
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.w500)),
+                                  Icon(Icons.chevron_right)
+                                ]),
+                          ),
+                        ),
+                        const SizedBox(height: 10),
+                        Text(
+                          snapshot.data!.description,
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 10),
+                    const Text("Скриншоты",
+                        textAlign: TextAlign.left,
+                        style: TextStyle(
+                            fontSize: 20, fontWeight: FontWeight.w500)),
+                    SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Row(
+                        children: [
+                          for (var screenshot in snapshot.data!.screenshots)
+                            Row(
+                              children: [
+                                ClipRRect(
+                                  borderRadius: BorderRadius.circular(10),
+                                  child: Image(
+                                    image: Image.network(screenshot).image,
+                                    width:
+                                        MediaQuery.of(context).size.width - 20,
+                                  ),
+                                ),
+                              ],
+                            )
+                        ],
                       ),
-                    ],
-                  ),
-                ],
+                    ),
+
+                    // ListView.builder(
+                    //     itemCount: snapshot.data!.screenshots.length,
+                    //     itemBuilder: (context, index) {})
+                  ],
+                ),
               );
             } else {
               return const Center(child: CircularProgressIndicator());
