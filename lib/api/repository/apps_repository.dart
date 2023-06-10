@@ -5,9 +5,9 @@ import 'package:swn_play/api/api.dart';
 import 'package:swn_play/api/models/apps.dart';
 import 'package:swn_play/api/models/pagination.dart';
 
-Future<Pagination> fetchApps(String type, {int page = 1, int pageSize = 150}) async {
+Future<Pagination> fetchApps({int page = 1, int pageSize = 150, String type = "", String q = ""}) async {
   final response = await http
-      .get(Uri.parse('${Api.apiUrl}/apps?type=${type}&page=${page}&pageSize=${pageSize}'));
+      .get(Uri.parse('${Api.apiUrl}/apps?q=${q}&type=${type}&page=${page}&pageSize=${pageSize}'));
 
   if (response.statusCode == 200) {
     debugPrint(response.body);
