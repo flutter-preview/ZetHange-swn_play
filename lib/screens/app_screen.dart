@@ -22,6 +22,7 @@ class AppScreen extends StatefulWidget {
 class _AppScreenState extends State<AppScreen> with WidgetsBindingObserver {
   late Future<App> _futureApp;
   late bool _installed = false;
+  String _installedPackageVersion = "";
   bool _isLoading = false;
   double _progress = 0;
 
@@ -30,9 +31,9 @@ class _AppScreenState extends State<AppScreen> with WidgetsBindingObserver {
     final String package = gettedApp.packageName;
     AppCheck.checkAvailability(package).then(
       (app) => {
-        debugPrint("app installed"),
         setState(() {
           _installed = true;
+          _installedPackageVersion = app!.versionName!;
         })
       },
     );
@@ -145,8 +146,12 @@ class _AppScreenState extends State<AppScreen> with WidgetsBindingObserver {
                   ),
                   Container(
                     margin: const EdgeInsets.only(top: 10),
-                    child: _installed
-                        ? ElevatedButton(
+                    child: Builder(
+                      builder: (BuildContext context) {
+                        if (_installed &&
+                            _installedPackageVersion ==
+                                snapshot.data!.latestVersion) {
+                          return ElevatedButton(
                             onPressed: playApp,
                             style: ElevatedButton.styleFrom(
                               minimumSize: const Size(double.infinity, 48),
@@ -154,8 +159,32 @@ class _AppScreenState extends State<AppScreen> with WidgetsBindingObserver {
                               foregroundColor: Colors.white,
                             ),
                             child: const Text("Запустить"),
-                          )
-                        : ElevatedButton(
+                          );
+                        } else if (_installed &&
+                            _installedPackageVersion !=
+                                snapshot.data!.latestVersion) {
+                          return ElevatedButton(
+                            onPressed: _isLoading ? null : downloadApp,
+                            style: ElevatedButton.styleFrom(
+                              minimumSize: const Size(double.infinity, 48),
+                              backgroundColor: Colors.green,
+                              foregroundColor: Colors.white,
+                            ),
+                            child: _isLoading
+                                ? Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                        CircularProgressIndicator(
+                                            value: _progress,
+                                            color: Colors.green),
+                                        const SizedBox(width: 10),
+                                        Text(
+                                            '${(_progress * 100).toStringAsFixed(0)}%')
+                                      ])
+                                : const Text('Обновить'),
+                          );
+                        } else {
+                          return ElevatedButton(
                             onPressed: _isLoading ? null : downloadApp,
                             style: ElevatedButton.styleFrom(
                               minimumSize: const Size(double.infinity, 48),
@@ -174,7 +203,10 @@ class _AppScreenState extends State<AppScreen> with WidgetsBindingObserver {
                                             '${(_progress * 100).toStringAsFixed(0)}%')
                                       ])
                                 : const Text('Загрузить'),
-                          ),
+                          );
+                        }
+                      },
+                    ),
                   ),
                   const SizedBox(height: 10),
                   Column(
@@ -187,6 +219,8 @@ class _AppScreenState extends State<AppScreen> with WidgetsBindingObserver {
                               MaterialPageRoute(
                                   builder: (context) => AppDescriptionScreen(
                                         app: snapshot.data!,
+                                        installedPackageVersion:
+                                            _installedPackageVersion,
                                       )));
                         },
                         child: Container(

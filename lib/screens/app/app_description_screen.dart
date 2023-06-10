@@ -5,11 +5,13 @@ import 'package:swn_play/studies/markdown.dart';
 
 class AppDescriptionScreen extends StatelessWidget {
   final App app;
+  final String installedPackageVersion;
   var formatter = DateFormat('dd.MM.yyyy');
 
   AppDescriptionScreen({
     super.key,
     required this.app,
+    required this.installedPackageVersion,
   });
 
   @override
@@ -44,6 +46,13 @@ class AppDescriptionScreen extends StatelessWidget {
                         children: [
                           const Text("Версия:"),
                           Text(app.latestVersion)
+                        ],
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          const Text("Установленная версия:"),
+                          Text(installedPackageVersion),
                         ],
                       ),
                       Row(
