@@ -38,8 +38,8 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   int _tab = 0;
   final List<Widget> _pages = [
-    const AppPage(),
     const GamePage(),
+    const AppPage(),
     const SearchPage(),
     const SettingsPage(),
   ];
@@ -56,8 +56,8 @@ class _HomePageState extends State<HomePage> {
           })
         },
         destinations: const <NavigationDestination>[
-          NavigationDestination(icon: Icon(Icons.adb), label: "Приложения"),
           NavigationDestination(icon: Icon(Icons.gamepad), label: "Игры"),
+          NavigationDestination(icon: Icon(Icons.adb), label: "Приложения"),
           NavigationDestination(icon: Icon(Icons.search), label: "Поиск"),
           NavigationDestination(icon: Icon(Icons.settings), label: "Настройки")
         ],

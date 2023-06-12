@@ -8,6 +8,7 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:swn_play/api/models/apps.dart';
 import 'package:swn_play/api/repository/apps_repository.dart';
 import 'package:swn_play/screens/app/app_description_screen.dart';
+import 'package:swn_play/studies/app/info_app.dart';
 
 class AppScreen extends StatefulWidget {
   final int id;
@@ -212,6 +213,8 @@ class _AppScreenState extends State<AppScreen> with WidgetsBindingObserver {
                       ),
                     ),
                     const SizedBox(height: 10),
+                    InfoAppWidget(app: snapshot.data!),
+                    const SizedBox(height: 10,),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -248,10 +251,13 @@ class _AppScreenState extends State<AppScreen> with WidgetsBindingObserver {
                       ],
                     ),
                     const SizedBox(height: 10),
-                    const Text("Скриншоты",
-                        textAlign: TextAlign.left,
-                        style: TextStyle(
-                            fontSize: 20, fontWeight: FontWeight.w500)),
+                    Container(
+                      padding: const EdgeInsets.all(5),
+                      child: const Text("Скриншоты",
+                          textAlign: TextAlign.left,
+                          style: TextStyle(
+                              fontSize: 20, fontWeight: FontWeight.w500)),
+                    ),
                     SingleChildScrollView(
                       scrollDirection: Axis.horizontal,
                       child: Row(
@@ -272,10 +278,6 @@ class _AppScreenState extends State<AppScreen> with WidgetsBindingObserver {
                         ],
                       ),
                     ),
-
-                    // ListView.builder(
-                    //     itemCount: snapshot.data!.screenshots.length,
-                    //     itemBuilder: (context, index) {})
                   ],
                 ),
               );

@@ -24,15 +24,33 @@ class _SearchPageState extends State<SearchPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: TextField(
-          decoration: const InputDecoration(
-            hintText: 'Поиск...',
+        bottom: PreferredSize(
+          preferredSize: const Size.fromHeight(0),
+          child: Container(
+            margin: const EdgeInsets.only(left: 10, right: 10),
+            child: TextField(
+              decoration: InputDecoration(
+                contentPadding: const EdgeInsets.symmetric(vertical: 15),
+                prefixIcon: const Icon(Icons.search),
+                hintText: 'Поиск...',
+                filled: true,
+                fillColor: Colors.green.shade300,
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(50),
+                  borderSide: BorderSide(color: Colors.green.shade300),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(50),
+                  borderSide: BorderSide(color: Colors.green.shade300),
+                ),
+              ),
+              onChanged: (value) {
+                setState(() {
+                  _futureApps = fetchApps(pageSize: 15, q: value);
+                });
+              },
+            ),
           ),
-          onChanged: (value) {
-            setState(() {
-              _futureApps = fetchApps(pageSize: 15, q: value);
-            });
-          },
         ),
       ),
       body: Center(
