@@ -53,7 +53,8 @@ class _SearchPageState extends State<SearchPage> {
           ),
         ),
       ),
-      body: Center(
+      body: Container(
+        margin: const EdgeInsets.only(top: 10),
         child: FutureBuilder<Pagination>(
           future: _futureApps,
           builder: (context, snapshot) {
