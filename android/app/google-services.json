@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "607284333271",
+    "project_id": "swn-play",
+    "storage_bucket": "swn-play.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:607284333271:android:f831ce5a663344e6153e92",
+        "android_client_info": {
+          "package_name": "com.stalkerworldnews.swnplay"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "607284333271-cmp8lcrhmkfhbqj9c2kg68d5dhi513uh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyARCtTPebi4VHhTT0EDaWK5aN3kaXBGIVY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "607284333271-cmp8lcrhmkfhbqj9c2kg68d5dhi513uh.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
