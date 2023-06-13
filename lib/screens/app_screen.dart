@@ -44,6 +44,7 @@ class _AppScreenState extends State<AppScreen> with WidgetsBindingObserver {
   void initState() {
     WidgetsBinding.instance.addObserver(this);
     _futureApp = fetchAppById(widget.id);
+    viewAppById(widget.id);
     checkPackageName();
     super.initState();
   }

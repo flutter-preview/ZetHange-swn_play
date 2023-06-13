@@ -1,14 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:swn_play/api/models/apps.dart';
 import 'package:swn_play/studies/markdown.dart';
 
 class AppDescriptionScreen extends StatelessWidget {
   final App app;
   final String installedPackageVersion;
-  var formatter = DateFormat('dd.MM.yyyy');
 
-  AppDescriptionScreen({
+  const AppDescriptionScreen({
     super.key,
     required this.app,
     required this.installedPackageVersion,
@@ -65,29 +63,29 @@ class AppDescriptionScreen extends StatelessWidget {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          const Text("Дата публикации:"),
-                          Text(formatter.format(DateTime.parse(app.createdAt)))
+                          const Text("Дата выпуска:"),
+                          Text(app.info.customCreatedAt)
                         ],
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          const Text("Дата обновления страницы:"),
-                          Text(formatter.format(DateTime.parse(app.updatedAt)))
+                          const Text("Дата обновления:"),
+                          Text(app.info.customUpdatedAt)
                         ],
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           const Text("Количество просмотров:"),
-                          Text(app.viewedQuantity.toString())
+                          Text(app.info.viewedQuantity.toString())
                         ],
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           const Text("Количество скачиваний:"),
-                          Text(app.downloadedQuantity.toString())
+                          Text(app.info.downloadedQuantity.toString())
                         ],
                       ),
                     ],

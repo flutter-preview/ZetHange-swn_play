@@ -41,3 +41,14 @@ Future<App> downloadAppById(int id) async {
     throw Exception('Failed to download app with id $id: ${response.statusCode}');
   }
 }
+
+Future<App> viewAppById(int id) async {
+  final response = await http.post(Uri.parse('${Api.apiUrl}/apps/view/$id'));
+
+  if (response.statusCode == 200) {
+    final app = App.fromJson(jsonDecode(utf8.decode(response.bodyBytes)));
+    return app;
+  } else {
+    throw Exception('Failed to view app with id $id: ${response.statusCode}');
+  }
+}

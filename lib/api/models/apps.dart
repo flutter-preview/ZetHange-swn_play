@@ -1,62 +1,91 @@
 class App {
-  final int id;
-  final String title;
-  final String developer;
-  final String description;
-  final String descriptionFull;
-  final String downloadLink;
-  final String logo;
-  final String packageName;
-  final String latestVersion;
-  final String type;
-  final int viewedQuantity;
-  final int downloadedQuantity;
-  final List<String> screenshots;
-  final String createdAt;
-  final String updatedAt;
-  final bool isPublished;
+  String createdAt;
+  String description;
+  String descriptionFull;
+  String developer;
+  String downloadLink;
+  int id;
+  AppInfo info;
+  bool isPublished;
+  String latestVersion;
+  String logo;
+  String packageName;
+  List<String> screenshots;
+  String title;
+  String type;
+  String updatedAt;
 
-  App(
-      {required this.id,
-      required this.screenshots,
-      required this.title,
-      required this.developer,
-      required this.logo,
-      required this.createdAt,
-      required this.updatedAt,
-      required this.description,
-      required this.descriptionFull,
-      required this.downloadLink,
-      required this.packageName,
-      required this.latestVersion,
-      required this.type,
-      required this.viewedQuantity,
-      required this.downloadedQuantity,
-      required this.isPublished});
-
-  @override
-  toString() {
-    return 'App{id: $id, title: $title, developer: $developer, description: $description, downloadLink: $downloadLink, logo: $logo, packageName: $packageName, isPublished: $isPublished}';
-  }
+  App({
+    required this.createdAt,
+    required this.description,
+    required this.descriptionFull,
+    required this.developer,
+    required this.downloadLink,
+    required this.id,
+    required this.info,
+    required this.isPublished,
+    required this.latestVersion,
+    required this.logo,
+    required this.packageName,
+    required this.screenshots,
+    required this.title,
+    required this.type,
+    required this.updatedAt,
+  });
 
   factory App.fromJson(Map<String, dynamic> json) {
     return App(
-      id: json['id'],
-      title: json['title'],
-      developer: json['developer'],
-      logo: json['logo'],
-      downloadLink: json['downloadLink'],
-      downloadedQuantity: json['downloadedQuantity'],
-      viewedQuantity: json['viewedQuantity'],
-      description: json['description'],
-      descriptionFull: json['descriptionFull'],
-      type: json['type'],
-      screenshots: List<String>.from(json['screenshots'].map((x) => x)),
-      packageName: json['packageName'],
-      latestVersion: json['latestVersion'],
-      createdAt: json['createdAt'],
-      updatedAt: json['updatedAt'],
-      isPublished: json["isPublished"],
+        createdAt: json['createdAt'],
+        description: json['description'],
+        descriptionFull: json['descriptionFull'],
+        developer: json['developer'],
+        downloadLink: json['downloadLink'],
+        id: json['id'],
+        info: AppInfo.fromJson(json['info']),
+        isPublished: json['isPublished'],
+        latestVersion: json['latestVersion'],
+        logo: json['logo'],
+        packageName: json['packageName'],
+        screenshots: List<String>.from(json['screenshots']),
+        title: json['title'],
+        type: json['type'],
+        updatedAt: json['updatedAt']
+    );
+  }
+
+}
+
+class AppInfo {
+  String ageLimit;
+  int appId;
+  String customCreatedAt;
+  String customUpdatedAt;
+  int downloadedQuantity;
+  int id;
+  String typeFile;
+  int viewedQuantity;
+
+  AppInfo({
+    required this.ageLimit,
+    required this.appId,
+    required this.customCreatedAt,
+    required this.customUpdatedAt,
+    required this.downloadedQuantity,
+    required this.id,
+    required this.typeFile,
+    required this.viewedQuantity,
+  });
+
+  factory AppInfo.fromJson(Map<String, dynamic> json) {
+    return AppInfo(
+        ageLimit: json['ageLimit'],
+        appId: json['appId'],
+        customCreatedAt: json['customCreatedAt'],
+        customUpdatedAt: json['customUpdatedAt'],
+        downloadedQuantity: json['downloadedQuantity'],
+        id: json['id'],
+        typeFile: json['typeFile'],
+        viewedQuantity: json['viewedQuantity']
     );
   }
 }
@@ -69,13 +98,12 @@ class AppSummary {
   final DateTime createdAt;
   final DateTime updatedAt;
 
-  AppSummary(
-      {required this.id,
-      required this.title,
-      required this.developer,
-      required this.logo,
-      required this.createdAt,
-      required this.updatedAt});
+  AppSummary({required this.id,
+    required this.title,
+    required this.developer,
+    required this.logo,
+    required this.createdAt,
+    required this.updatedAt});
 
   factory AppSummary.fromJson(Map<String, dynamic> json) {
     return AppSummary(

@@ -13,14 +13,14 @@ class InfoAppWidget extends StatelessWidget {
       child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
         Column(
           children: [
-            const Icon(Icons.adb),
-            Text("Тип: ${app.type == "game" ? "игра" : "приложение"}"),
+            const Icon(Icons.file_copy),
+            Text("Тип: ${app.info.typeFile}"),
           ],
         ),
         const SizedBox(width: 10),
         Column(
           children: [
-            const Icon(Icons.account_tree_rounded),
+            const Icon(Icons.swap_vertical_circle),
             Text("Версия: ${app.latestVersion}"),
           ],
         ),
@@ -28,9 +28,16 @@ class InfoAppWidget extends StatelessWidget {
         Column(
           children: [
             const Icon(Icons.download),
-            Text("Скачиваний: ${app.downloadedQuantity}"),
+            Text("Скачиваний: ${app.info.downloadedQuantity}"),
           ],
         ),
+        const SizedBox(width: 10),
+        Column(
+          children: [
+            const Icon(Icons.verified_user_rounded),
+            Text(app.info.ageLimit),
+          ],
+        )
       ]),
     );
   }
