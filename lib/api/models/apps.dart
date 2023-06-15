@@ -116,3 +116,24 @@ class AppSummary {
     );
   }
 }
+
+class Package {
+  String packageName;
+  String version;
+
+  Package({required this.packageName, required this.version});
+
+  factory Package.fromJson(Map<String, dynamic> json) {
+    return Package(
+      packageName: json['packageName'],
+      version: json['version'],
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'packageName': packageName,
+      'version': version,
+    };
+  }
+}

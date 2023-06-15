@@ -259,8 +259,13 @@ class _AppScreenState extends State<AppScreen> with WidgetsBindingObserver {
                           style: TextStyle(
                               fontSize: 20, fontWeight: FontWeight.w500)),
                     ),
+                    const SizedBox(height: 10),
                     SingleChildScrollView(
                       scrollDirection: Axis.horizontal,
+                      physics: const PageScrollPhysics(),
+                      controller: PageController(
+                        viewportFraction: 120 / (MediaQuery.of(context).size.width - 20),
+                      ),
                       child: Row(
                         children: [
                           for (var screenshot in snapshot.data!.screenshots)
