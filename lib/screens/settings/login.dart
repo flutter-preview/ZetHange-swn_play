@@ -30,12 +30,12 @@ class _LoginPageState extends State<LoginPage> {
           _isLoading = false;
         });
       } else {
+        final prefs = await SharedPreferences.getInstance();
+        prefs.setBool('isLoggedIn', true);
+        prefs.setString("token", token);
+
         Navigator.pop(context);
       }
-
-      final prefs = await SharedPreferences.getInstance();
-      prefs.setBool('isLogged', true);
-      prefs.setString("token", token);
     }
 
     setState(() {

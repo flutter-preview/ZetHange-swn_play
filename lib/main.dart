@@ -16,7 +16,6 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   print("Handling a background message: ${message.messageId}");
 }
 
-
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
@@ -31,7 +30,8 @@ void main() async {
     debugPrint('Message data: ${message.data}');
 
     if (message.notification != null) {
-      debugPrint('Message also contained a notification: ${message.notification}');
+      debugPrint(
+          'Message also contained a notification: ${message.notification}');
     }
   });
 
@@ -47,6 +47,9 @@ class SWNPlayApp extends StatelessWidget {
       title: 'SWN Play',
       theme: ThemeData(
         useMaterial3: true,
+        primaryColor: Colors.white,
+        backgroundColor: Colors.white,
+        accentColor: Colors.white,
         navigationBarTheme: const NavigationBarThemeData(
             backgroundColor: Colors.white, indicatorColor: Colors.green),
       ),

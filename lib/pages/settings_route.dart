@@ -2,6 +2,8 @@ import 'package:appcheck/appcheck.dart' as appCheck;
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:swn_play/api/repository/apps_repository.dart';
+import 'package:swn_play/screens/settings/login.dart';
+
 // import 'package:swn_play/screens/settings/login.dart';
 import 'package:swn_play/studies/app.dart';
 
@@ -15,13 +17,15 @@ class SettingsPage extends StatefulWidget {
 }
 
 class _SettingsPageState extends State<SettingsPage> {
-  String _profile = "";
   late Future<List<AppSummary>> _olderApps;
+  late bool isLoggedIn = false;
 
   void getData() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
-
-    _profile = preferences.getString("profile")!;
+    setState(() {
+      isLoggedIn = preferences.getBool("isLoggedIn") ?? false;
+    });
+    debugPrint("isLoggedIn: " + isLoggedIn.toString());
   }
 
   Future<List<AppSummary>> getOlderApps() async {
@@ -45,38 +49,69 @@ class _SettingsPageState extends State<SettingsPage> {
     super.initState();
   }
 
-  void setProfile() async {
-    SharedPreferences preferences = await SharedPreferences.getInstance();
-
-    preferences.setString("profile", "app");
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(toolbarHeight: 0),
-      body: FutureBuilder<List<AppSummary>>(
-        future: _olderApps,
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            return ListView.builder(
-              itemCount: snapshot.data!.length,
-              itemBuilder: (context, index) {
-                final post = snapshot.data![index];
-                return AppListWidget(
-                  id: post.id,
-                  title: post.title,
-                  logo: post.logo,
-                  developer: post.developer,
+      body: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+        Container(
+            padding: const EdgeInsets.only(left: 10, right: 10, top: 10),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Card(
+                  color: Colors.white,
+                  child: Container(
+                    padding: const EdgeInsets.all(10),
+                    child: InkWell(
+                      child: Row(children: [
+                        Column(children: const [Icon(Icons.account_circle)]),
+                        const SizedBox(
+                          width: 10,
+                        ),
+                        Text(isLoggedIn ? "Вы вошли в аккаунт, круто" : "Вы не вошли в аккаунт")
+                      ]),
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => const LoginPage()),
+                        );
+                      },
+                    ),
+                  ),
+                ),
+                const Text(
+                  "Обновления:",
+                  style: TextStyle(fontSize: 20),
+                ),
+              ],
+            )),
+        SizedBox(
+          height: MediaQuery.of(context).size.height - 112 - 46.9 - 44,
+          child: FutureBuilder<List<AppSummary>>(
+            future: _olderApps,
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                return ListView.builder(
+                  itemCount: snapshot.data!.length,
+                  itemBuilder: (context, index) {
+                    final post = snapshot.data![index];
+                    return AppListWidget(
+                      id: post.id,
+                      title: post.title,
+                      logo: post.logo,
+                      developer: post.developer,
+                    );
+                  },
                 );
-              },
-            );
-          }
-          return const Center(
-            child: CircularProgressIndicator(),
-          );
-        },
-      ),
+              }
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            },
+          ),
+        ),
+      ]),
     );
   }
 }

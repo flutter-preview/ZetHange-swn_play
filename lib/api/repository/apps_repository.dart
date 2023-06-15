@@ -61,11 +61,9 @@ Future<List<AppSummary>> getUpdateApps(List<Package> packages) async {
       jsonEncode(packages.map((package) => package.toJson()).toList());
   final response = await http.post(Uri.parse('${Api.apiUrl}/apps/getUpdates'),
       body: packagesJson, headers: {'Content-Type': 'application/json'});
-  debugPrint(packagesJson);
 
   if (response.statusCode == 200) {
     List<dynamic> jsonList = jsonDecode(utf8.decode(response.bodyBytes));
-    debugPrint(jsonList.toString());
     final app = jsonList.map((json) => AppSummary.fromJson(json)).toList();
     return app;
   } else {
