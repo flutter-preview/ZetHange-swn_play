@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:swn_play/api/repository/auth_repository.dart';
-import 'package:swn_play/screens/settings/settings_screen.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
