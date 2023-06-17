@@ -15,83 +15,86 @@ class AppDescriptionScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: const Text("Описание"),
-        ),
-        body: Container(
-            margin: const EdgeInsets.only(right: 10, left: 10),
-            child: SingleChildScrollView(
+      appBar: AppBar(
+        title: const Text("Описание"),
+      ),
+      body: Container(
+        margin: const EdgeInsets.only(right: 10, left: 10),
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const SizedBox(height: 10),
+              MyMarkdownWidget(app.descriptionFull),
+              const Divider(color: Colors.grey),
+              Container(
+                padding: const EdgeInsets.all(5),
                 child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const SizedBox(height: 10),
-                MyMarkdownWidget(app.descriptionFull),
-                const Divider(color: Colors.grey),
-                Container(
-                  padding: const EdgeInsets.all(5),
-                  child: Column(
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          const Text("Имя пакета:"),
-                          Text(app.packageName)
-                        ],
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          const Text("Версия:"),
-                          Text(app.latestVersion)
-                        ],
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          const Text("Установленная версия:"),
-                          Text(installedPackageVersion),
-                        ],
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          const Text("Разработчик:"),
-                          Text(app.developer)
-                        ],
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          const Text("Дата выпуска:"),
-                          Text(app.info.customCreatedAt)
-                        ],
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          const Text("Дата обновления:"),
-                          Text(app.info.customUpdatedAt)
-                        ],
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          const Text("Количество просмотров:"),
-                          Text(app.viewedQuantity.toString())
-                        ],
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          const Text("Количество скачиваний:"),
-                          Text(app.downloadedQuantity.toString())
-                        ],
-                      ),
-                    ],
-                  ),
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const Text("Имя пакета:"),
+                        Text(app.packageName)
+                      ],
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const Text("Версия:"),
+                        Text(app.latestVersion)
+                      ],
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const Text("Установленная версия:"),
+                        Text(installedPackageVersion),
+                      ],
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const Text("Разработчик:"),
+                        Text(app.developer)
+                      ],
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const Text("Дата выпуска:"),
+                        Text(app.info.customCreatedAt)
+                      ],
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const Text("Дата обновления:"),
+                        Text(app.info.customUpdatedAt)
+                      ],
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const Text("Количество просмотров:"),
+                        Text(app.viewedQuantity.toString())
+                      ],
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const Text("Количество скачиваний:"),
+                        Text(app.downloadedQuantity.toString())
+                      ],
+                    ),
+                  ],
                 ),
-              ],
-            ))));
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
   }
 }

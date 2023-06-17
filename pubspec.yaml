@@ -7,8 +7,6 @@ version: 1.0.2+1
 environment:
   sdk: '>=2.19.6 <3.0.0'
 
-
-
 dependencies:
   flutter:
     sdk: flutter
@@ -25,7 +23,6 @@ dependencies:
   shared_preferences: ^2.1.2
   firebase_core: ^2.13.1
   firebase_messaging: ^14.6.2
-  uni_links: ^0.5.1
 
 dev_dependencies:
   flutter_test:

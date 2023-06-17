@@ -1,90 +1,84 @@
 class App {
-  String createdAt;
-  String description;
-  String descriptionFull;
-  String developer;
-  String downloadLink;
-  int id;
-  AppInfo info;
-  bool isPublished;
-  String latestVersion;
-  String logo;
-  String packageName;
-  List<String> screenshots;
-  String title;
-  String type;
-  String updatedAt;
-  int downloadedQuantity;
-  int viewedQuantity;
+  final int id;
+  final String title;
+  final String type;
+  final String developer;
+  final String logo;
+  final String downloadLink;
+  final List<String> screenshots;
+  final String description;
+  final String descriptionFull;
+  final String latestVersion;
+  final String packageName;
+  final int downloadedQuantity;
+  final int viewedQuantity;
+  final bool isPublished;
+  final AppInfo info;
+  final DateTime createdAt;
+  final DateTime updatedAt;
 
   App({
-    required this.createdAt,
-    required this.description,
-    required this.descriptionFull,
-    required this.developer,
-    required this.downloadLink,
     required this.id,
-    required this.info,
-    required this.isPublished,
-    required this.latestVersion,
-    required this.logo,
-    required this.packageName,
-    required this.screenshots,
     required this.title,
     required this.type,
-    required this.updatedAt,
+    required this.developer,
+    required this.logo,
+    required this.downloadLink,
+    required this.screenshots,
+    required this.description,
+    required this.descriptionFull,
+    required this.latestVersion,
+    required this.packageName,
     required this.downloadedQuantity,
     required this.viewedQuantity,
+    required this.isPublished,
+    required this.info,
+    required this.createdAt,
+    required this.updatedAt,
   });
 
   factory App.fromJson(Map<String, dynamic> json) {
     return App(
-      createdAt: json['createdAt'],
-      description: json['description'],
-      descriptionFull: json['descriptionFull'],
-      developer: json['developer'],
-      downloadLink: json['downloadLink'],
-      id: json['id'],
-      info: AppInfo.fromJson(json['info']),
-      isPublished: json['isPublished'],
-      latestVersion: json['latestVersion'],
-      logo: json['logo'],
-      packageName: json['packageName'],
-      screenshots: List<String>.from(json['screenshots']),
-      title: json['title'],
-      type: json['type'],
-      updatedAt: json['updatedAt'],
-      downloadedQuantity: json['downloadedQuantity'],
-      viewedQuantity: json['viewedQuantity'],
+      id: json['id'] as int,
+      title: json['title'] as String,
+      type: json['type'] as String,
+      developer: json['developer'] as String,
+      logo: json['logo'] as String,
+      downloadLink: json['downloadLink'] as String,
+      screenshots: List<String>.from(json['screenshots'] as List),
+      description: json['description'] as String,
+      descriptionFull: json['descriptionFull'] as String,
+      latestVersion: json['latestVersion'] as String,
+      packageName: json['packageName'] as String,
+      downloadedQuantity: json['downloadedQuantity'] as int,
+      viewedQuantity: json['viewedQuantity'] as int,
+      isPublished: json['isPublished'] as bool,
+      info: AppInfo.fromJson(json['info'] as Map<String, dynamic>),
+      createdAt: DateTime.parse(json['createdAt'] as String),
+      updatedAt: DateTime.parse(json['updatedAt'] as String),
     );
   }
 }
 
 class AppInfo {
-  String ageLimit;
-  int appId;
-  String customCreatedAt;
-  String customUpdatedAt;
-  int id;
-  String typeFile;
+  final String ageLimit;
+  final String typeFile;
+  final String customUpdatedAt;
+  final String customCreatedAt;
 
   AppInfo({
     required this.ageLimit,
-    required this.appId,
-    required this.customCreatedAt,
-    required this.customUpdatedAt,
-    required this.id,
     required this.typeFile,
+    required this.customUpdatedAt,
+    required this.customCreatedAt,
   });
 
   factory AppInfo.fromJson(Map<String, dynamic> json) {
     return AppInfo(
-      ageLimit: json['ageLimit'],
-      appId: json['appId'],
-      customCreatedAt: json['customCreatedAt'],
-      customUpdatedAt: json['customUpdatedAt'],
-      id: json['id'],
-      typeFile: json['typeFile'],
+      ageLimit: json['ageLimit'] as String,
+      typeFile: json['typeFile'] as String,
+      customUpdatedAt: json['customUpdatedAt'] as String,
+      customCreatedAt: json['customCreatedAt'] as String,
     );
   }
 }
@@ -96,23 +90,33 @@ class AppSummary {
   final String logo;
   final DateTime createdAt;
   final DateTime updatedAt;
+  final int downloadedQuantity;
+  final int viewedQuantity;
+  final bool isPublished;
 
-  AppSummary(
-      {required this.id,
-      required this.title,
-      required this.developer,
-      required this.logo,
-      required this.createdAt,
-      required this.updatedAt});
+  AppSummary({
+    required this.id,
+    required this.title,
+    required this.developer,
+    required this.logo,
+    required this.createdAt,
+    required this.updatedAt,
+    required this.downloadedQuantity,
+    required this.viewedQuantity,
+    required this.isPublished,
+  });
 
   factory AppSummary.fromJson(Map<String, dynamic> json) {
     return AppSummary(
-      id: json['id'],
-      title: json['title'],
-      developer: json['developer'],
-      logo: json['logo'],
-      createdAt: DateTime.parse(json['createdAt']),
-      updatedAt: DateTime.parse(json['updatedAt']),
+      id: json['id'] as int,
+      title: json['title'] as String,
+      developer: json['developer'] as String,
+      logo: json['logo'] as String,
+      createdAt: DateTime.parse(json['createdAt'] as String),
+      updatedAt: DateTime.parse(json['updatedAt'] as String),
+      downloadedQuantity: json['downloadedQuantity'] as int,
+      viewedQuantity: json['viewedQuantity'] as int,
+      isPublished: json['isPublished'] as bool,
     );
   }
 }
