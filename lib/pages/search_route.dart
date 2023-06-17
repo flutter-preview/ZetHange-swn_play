@@ -53,30 +53,28 @@ class _SearchPageState extends State<SearchPage> {
           ),
         ),
       ),
-      body: Container(
-        margin: const EdgeInsets.only(top: 10),
-        child: FutureBuilder<Pagination>(
-          future: _futureApps,
-          builder: (context, snapshot) {
-            if (snapshot.hasData) {
-              return ListView.builder(
-                itemCount: snapshot.data!.content.length,
-                itemBuilder: (context, index) {
-                  final post = snapshot.data!.content[index];
-                  return AppListWidget(
-                    id: post.id,
-                    title: post.title,
-                    logo: post.logo,
-                    developer: post.developer,
-                  );
-                },
-              );
-            }
-            return const Center(
-              child: CircularProgressIndicator(),
+      body: FutureBuilder<Pagination>(
+        future: _futureApps,
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            return ListView.builder(
+              padding: const EdgeInsets.only(top: 5),
+              itemCount: snapshot.data!.content.length,
+              itemBuilder: (context, index) {
+                final post = snapshot.data!.content[index];
+                return AppListWidget(
+                  id: post.id,
+                  title: post.title,
+                  logo: post.logo,
+                  developer: post.developer,
+                );
+              },
             );
-          },
-        ),
+          }
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        },
       ),
     );
   }

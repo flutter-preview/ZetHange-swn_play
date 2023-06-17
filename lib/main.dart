@@ -49,7 +49,6 @@ class SWNPlayApp extends StatelessWidget {
         useMaterial3: true,
         primaryColor: Colors.white,
         backgroundColor: Colors.white,
-        accentColor: Colors.white,
         navigationBarTheme: const NavigationBarThemeData(
             backgroundColor: Colors.white, indicatorColor: Colors.green),
       ),

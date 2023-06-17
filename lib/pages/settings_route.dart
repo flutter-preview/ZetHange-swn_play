@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:swn_play/api/repository/apps_repository.dart';
 import 'package:swn_play/screens/settings/login.dart';
+import 'package:swn_play/screens/settings/settings_screen.dart';
 
 // import 'package:swn_play/screens/settings/login.dart';
 import 'package:swn_play/studies/app.dart';
@@ -65,16 +66,20 @@ class _SettingsPageState extends State<SettingsPage> {
                     padding: const EdgeInsets.all(10),
                     child: InkWell(
                       child: Row(children: [
-                        Column(children: const [Icon(Icons.account_circle)]),
+                        const Column(children: [Icon(Icons.account_circle)]),
                         const SizedBox(
                           width: 10,
                         ),
-                        Text(isLoggedIn ? "Вы вошли в аккаунт, круто" : "Вы не вошли в аккаунт")
+                        Text(isLoggedIn
+                            ? "Вы вошли в аккаунт, круто"
+                            : "Вы не вошли в аккаунт")
                       ]),
                       onTap: () {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => const LoginPage()),
+                          MaterialPageRoute(
+                            builder: (context) => const SettingsScreen(),
+                          ),
                         );
                       },
                     ),

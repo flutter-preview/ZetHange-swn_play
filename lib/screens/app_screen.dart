@@ -93,7 +93,7 @@ class _AppScreenState extends State<AppScreen> with WidgetsBindingObserver {
     ].request();
     App gettedApp = await _futureApp;
     String url = gettedApp.downloadLink;
-    String fileName = '${gettedApp.title}.apk';
+    String fileName = '${gettedApp.title}-${gettedApp.latestVersion}.apk';
     Directory dir = Directory('/storage/emulated/0/Download/SWN Play');
     String savePath = '${dir.path}/$fileName';
     downloadAppById(gettedApp.id);
@@ -115,35 +115,40 @@ class _AppScreenState extends State<AppScreen> with WidgetsBindingObserver {
         title: Text(widget.title),
       ),
       body: Container(
-        margin: const EdgeInsets.only(left: 10, right: 10, top: 10),
+        padding: const EdgeInsets.only(left: 10, right: 10),
         child: FutureBuilder<App>(
           future: _futureApp,
           builder: (context, snapshot) {
             if (snapshot.hasData) {
               return SingleChildScrollView(
+                padding: const EdgeInsets.only(top: 10),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Row(
                       children: [
                         ClipRRect(
-                            borderRadius: BorderRadius.circular(15.0),
-                            child: Image(
-                              width: 80,
-                              image: NetworkImage(snapshot.data!.logo),
-                            )),
+                          borderRadius: BorderRadius.circular(15.0),
+                          child: Image(
+                            width: 80,
+                            image: NetworkImage(snapshot.data!.logo),
+                          ),
+                        ),
                         Container(
                           margin: const EdgeInsets.only(left: 10),
                           child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(snapshot.data!.title,
-                                    style: const TextStyle(fontSize: 18)),
-                                Text(
-                                  snapshot.data!.developer,
-                                  style: const TextStyle(color: Colors.grey),
-                                )
-                              ]),
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                snapshot.data!.title,
+                                style: const TextStyle(fontSize: 18),
+                              ),
+                              Text(
+                                snapshot.data!.developer,
+                                style: const TextStyle(color: Colors.grey),
+                              ),
+                            ],
+                          ),
                         ),
                       ],
                     ),
@@ -178,13 +183,14 @@ class _AppScreenState extends State<AppScreen> with WidgetsBindingObserver {
                                       mainAxisAlignment:
                                           MainAxisAlignment.center,
                                       children: [
-                                          CircularProgressIndicator(
-                                              value: _progress,
-                                              color: Colors.green),
-                                          const SizedBox(width: 10),
-                                          Text(
-                                              '${(_progress * 100).toStringAsFixed(0)}%')
-                                        ])
+                                        CircularProgressIndicator(
+                                            value: _progress,
+                                            color: Colors.green),
+                                        const SizedBox(width: 10),
+                                        Text(
+                                            '${(_progress * 100).toStringAsFixed(0)}%')
+                                      ],
+                                    )
                                   : const Text('Обновить'),
                             );
                           } else {
@@ -200,13 +206,15 @@ class _AppScreenState extends State<AppScreen> with WidgetsBindingObserver {
                                       mainAxisAlignment:
                                           MainAxisAlignment.center,
                                       children: [
-                                          CircularProgressIndicator(
-                                              value: _progress,
-                                              color: Colors.green),
-                                          const SizedBox(width: 10),
-                                          Text(
-                                              '${(_progress * 100).toStringAsFixed(0)}%')
-                                        ])
+                                        CircularProgressIndicator(
+                                          value: _progress,
+                                          color: Colors.green,
+                                        ),
+                                        const SizedBox(width: 10),
+                                        Text(
+                                            '${(_progress * 100).toStringAsFixed(0)}%')
+                                      ],
+                                    )
                                   : const Text('Загрузить'),
                             );
                           }
@@ -215,34 +223,40 @@ class _AppScreenState extends State<AppScreen> with WidgetsBindingObserver {
                     ),
                     const SizedBox(height: 10),
                     InfoAppWidget(app: snapshot.data!),
-                    const SizedBox(height: 10,),
+                    const SizedBox(
+                      height: 10,
+                    ),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         InkWell(
                           onTap: () {
                             Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => AppDescriptionScreen(
-                                          app: snapshot.data!,
-                                          installedPackageVersion:
-                                              _installedPackageVersion,
-                                        )));
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => AppDescriptionScreen(
+                                  app: snapshot.data!,
+                                  installedPackageVersion:
+                                      _installedPackageVersion,
+                                ),
+                              ),
+                            );
                           },
                           child: Container(
                             padding: const EdgeInsets.all(5),
-                            child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: const [
-                                  Text("Описание",
-                                      textAlign: TextAlign.left,
-                                      style: TextStyle(
-                                          fontSize: 20,
-                                          fontWeight: FontWeight.w500)),
-                                  Icon(Icons.chevron_right)
-                                ]),
+                            child: const Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  "Описание",
+                                  textAlign: TextAlign.left,
+                                  style: TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.w500),
+                                ),
+                                Icon(Icons.chevron_right)
+                              ],
+                            ),
                           ),
                         ),
                         const SizedBox(height: 10),
@@ -254,17 +268,20 @@ class _AppScreenState extends State<AppScreen> with WidgetsBindingObserver {
                     const SizedBox(height: 10),
                     Container(
                       padding: const EdgeInsets.all(5),
-                      child: const Text("Скриншоты",
-                          textAlign: TextAlign.left,
-                          style: TextStyle(
-                              fontSize: 20, fontWeight: FontWeight.w500)),
+                      child: const Text(
+                        "Скриншоты",
+                        textAlign: TextAlign.left,
+                        style: TextStyle(
+                            fontSize: 20, fontWeight: FontWeight.w500),
+                      ),
                     ),
                     const SizedBox(height: 10),
                     SingleChildScrollView(
                       scrollDirection: Axis.horizontal,
                       physics: const PageScrollPhysics(),
                       controller: PageController(
-                        viewportFraction: 120 / (MediaQuery.of(context).size.width - 20),
+                        viewportFraction:
+                            120 / (MediaQuery.of(context).size.width - 20),
                       ),
                       child: Row(
                         children: [
@@ -280,7 +297,7 @@ class _AppScreenState extends State<AppScreen> with WidgetsBindingObserver {
                                   ),
                                 ),
                               ],
-                            )
+                            ),
                         ],
                       ),
                     ),

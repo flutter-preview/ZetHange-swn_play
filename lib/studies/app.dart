@@ -21,9 +21,11 @@ class AppListWidget extends StatelessWidget {
       child: InkWell(
         onTap: () {
           Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => AppScreen(id: id, title: title)));
+            context,
+            MaterialPageRoute(
+              builder: (context) => AppScreen(id: id, title: title),
+            ),
+          );
         },
         child: Container(
           padding:
@@ -31,21 +33,25 @@ class AppListWidget extends StatelessWidget {
           child: Row(
             children: <Widget>[
               ClipRRect(
-                  borderRadius: BorderRadius.circular(15.0),
-                  child: Image(
-                    width: 80,
-                    image: NetworkImage(logo),
-                  )),
+                borderRadius: BorderRadius.circular(15.0),
+                child: Image(
+                  width: 80,
+                  image: NetworkImage(logo),
+                ),
+              ),
               Container(
                 margin: const EdgeInsets.only(left: 10),
                 child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(title, style: const TextStyle(fontSize: 18.0)),
-                      Text(developer,
-                          style: const TextStyle(
-                              fontSize: 15.0, color: Colors.grey)),
-                    ]),
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(title, style: const TextStyle(fontSize: 18.0)),
+                    Text(
+                      developer,
+                      style:
+                          const TextStyle(fontSize: 15.0, color: Colors.grey),
+                    ),
+                  ],
+                ),
               )
             ],
           ),

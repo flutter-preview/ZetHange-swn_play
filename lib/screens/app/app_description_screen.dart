@@ -78,14 +78,14 @@ class AppDescriptionScreen extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           const Text("Количество просмотров:"),
-                          Text(app.info.viewedQuantity.toString())
+                          Text(app.viewedQuantity.toString())
                         ],
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           const Text("Количество скачиваний:"),
-                          Text(app.info.downloadedQuantity.toString())
+                          Text(app.downloadedQuantity.toString())
                         ],
                       ),
                     ],

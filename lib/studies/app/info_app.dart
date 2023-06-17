@@ -28,7 +28,7 @@ class InfoAppWidget extends StatelessWidget {
         Column(
           children: [
             const Icon(Icons.download),
-            Text("Скачиваний: ${app.info.downloadedQuantity}"),
+            Text("Скачиваний: ${app.downloadedQuantity}"),
           ],
         ),
         const SizedBox(width: 10),

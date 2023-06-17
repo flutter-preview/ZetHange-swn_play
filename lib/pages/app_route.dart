@@ -22,12 +22,43 @@ class _AppPageState extends State<AppPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: FutureBuilder<Pagination>(
+    return Scaffold(
+      appBar: AppBar(
+        bottom: PreferredSize(
+          preferredSize: const Size.fromHeight(0),
+          child: Container(
+            margin: const EdgeInsets.only(left: 10, right: 10),
+            child: TextField(
+              decoration: InputDecoration(
+                contentPadding: const EdgeInsets.symmetric(vertical: 15),
+                prefixIcon: const Icon(Icons.search),
+                hintText: 'Поиск...',
+                filled: true,
+                fillColor: Colors.green.shade300,
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(50),
+                  borderSide: BorderSide(color: Colors.green.shade300),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(50),
+                  borderSide: BorderSide(color: Colors.green.shade300),
+                ),
+              ),
+              onChanged: (value) {
+                setState(() {
+                  _futureApps = fetchApps(type: "app", q: value);
+                });
+              },
+            ),
+          ),
+        ),
+      ),
+      body: FutureBuilder<Pagination>(
         future: _futureApps,
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             return ListView.builder(
+              padding: const EdgeInsets.only(top: 5),
               itemCount: snapshot.data!.content.length,
               itemBuilder: (context, index) {
                 final post = snapshot.data!.content[index];

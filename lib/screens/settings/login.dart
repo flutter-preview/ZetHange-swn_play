@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:swn_play/api/repository/auth_repository.dart';
+import 'package:swn_play/screens/settings/settings_screen.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -34,7 +35,7 @@ class _LoginPageState extends State<LoginPage> {
         prefs.setBool('isLoggedIn', true);
         prefs.setString("token", token);
 
-        Navigator.pop(context);
+        Navigator.popUntil(context, ModalRoute.withName('SettingsScreen'));
       }
     }
 
@@ -65,7 +66,7 @@ class _LoginPageState extends State<LoginPage> {
                   if (value!.isEmpty) {
                     return 'Введите email';
                   }
-                  if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$')
+                  if (!RegExp(r'^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$')
                       .hasMatch(value)) {
                     return 'Введите корректный email';
                   }
